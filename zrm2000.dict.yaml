@@ -18,6 +18,7 @@ encoder:
     - length_in_range: [4, 10]
       formula: "AaBaCaZa"
 ...
+梁文锋	ldwffg	1000000
 
 啊	a	83803	aa
 俺	a	16897	an
