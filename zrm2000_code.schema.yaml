@@ -1,0 +1,95 @@
+# Rime schema: 自然码2000 v2（标点优先）
+schema:
+  schema_id: zrm2000_code
+  name: "自然码2000·官方编码"
+  version: "2009+v2"
+  author:
+    - 周志农（自然码发明人）
+    - zrm2000-rime v2
+  description: |
+    自然码2000 双拼 + 辅助码（官方编码模式：, . 是编码）
+    官方码表 + 现代新词 + 词频权重
+    编码优先：, . 是编码字符；中文标点仍可用 Ctrl+Shift+3 等
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中文, 西文 ]
+  - name: full_shape
+    reset: 0
+    states: [ 半角, 全角 ]
+  - name: ascii_punct
+    reset: 0
+    states: [ 中文标点, 英文标点 ]
+  - name: simplification
+    reset: 0
+    states: [ 简体, 繁体 ]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - table_translator@custom_phrase
+    - table_translator
+  filters:
+    - simplifier
+    - uniquifier
+
+speller:
+  alphabet: ",.abcdefghijklmnopqrstuvwxyz"
+  initials: "abcdefghijklmnopqrstuvwxyz"
+  delimiter: " '"
+  max_code_length: 6
+
+translator:
+  dictionary: zrm2000
+  enable_charset_filter: true
+  enable_encoder: true
+  enable_sentence: false
+  encode_commit_history: true
+  enable_completion: false
+  enable_user_dict: true
+  user_dict: zrm2000_code.userdb
+  db_class: userdb
+  max_phrase_length: 8
+  initial_quality: 1.0
+  spelling_hints: 0
+
+custom_phrase:
+  dictionary: ""
+  user_dict: custom_phrase
+  db_class: stabledb
+  enable_completion: false
+  enable_sentence: false
+  initial_quality: 99
+
+simplifier:
+  option_name: simplification
+  opencc_config: s2t.json
+  tips: all
+
+punctuator:
+  import_preset: default
+
+key_binder:
+  import_preset: default
+  bindings:
+    - { when: has_menu, accept: comma, send: comma }
+    - { when: has_menu, accept: period, send: period }
+
+recognizer:
+  import_preset: default

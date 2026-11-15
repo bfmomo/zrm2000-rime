@@ -1,0 +1,5 @@
+patch:
+  schema_list:
+    - schema: zrm2000
+    # - schema: zrm2000_code   # 需要官方 ,/. 编码时再启用
+  menu/page_size: 9

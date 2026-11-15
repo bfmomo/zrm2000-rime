@@ -1,0 +1,50 @@
+patch:
+  app_options:
+    HuaweiBrowser.exe:
+      inline_preedit: false
+    chrome.exe:
+      inline_preedit: false
+    msedge.exe:
+      inline_preedit: false
+    firefox.exe:
+      inline_preedit: false
+  style:
+    horizontal: true
+    inline_preedit: false
+    preedit_type: composition
+    font_face: "Microsoft YaHei UI Light"
+    font_point: 14
+    label_font_face: "Microsoft YaHei UI Light"
+    label_font_point: 13
+    comment_font_face: "Microsoft YaHei UI Light"
+    comment_font_point: 10
+    candidate_abbreviate_length: 30
+    candidate_spacing: 12
+    spacing: 8
+    margin_x: 12
+    margin_y: 8
+    border_width: 2
+    corner_radius: 7
+    shadow_radius: 6
+    shadow_offset_x: 3
+    shadow_offset_y: 3
+    alpha: 1.0
+    color_scheme: zrm2000
+  preset_color_schemes:
+    zrm2000:
+      name: "自然码·清"
+      author: "zrm2000-rime v2.2"
+      color_format: argb
+      back_color: 0xFFEAF1E4
+      border_color: 0xFF93A98F
+      shadow_color: 0x45000000
+      text_color: 0xFF2F6FB0
+      hilited_text_color: 0xFF1F5A9A
+      hilited_back_color: 0xFFDCE8F2
+      candidate_text_color: 0xFF111111
+      comment_text_color: 0xFF1E6FD0
+      label_color: 0xFF333333
+      hilited_candidate_text_color: 0xFFFFFFFF
+      hilited_candidate_back_color: 0xFF2F5D3A
+      hilited_candidate_label_color: 0xFFFFFFFF
+      hilited_comment_text_color: 0xFFA8C8F0

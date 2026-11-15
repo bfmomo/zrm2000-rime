@@ -1,0 +1,157 @@
+# Rime schema: 自然码2000 v2（标点优先）
+schema:
+  schema_id: zrm2000
+  name: "自然码2000"
+  version: "2009+v2"
+  author:
+    - 周志农（自然码发明人）
+    - zrm2000-rime v2
+  description: |
+    自然码2000 双拼 + 辅助码（自动字词句）
+    官方码表 + 现代新词 + 词频权重
+    标点优先：, . 是标点；编码只用 a-z
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中文, 西文 ]
+  - name: full_shape
+    reset: 0
+    states: [ 半角, 全角 ]
+  - name: ascii_punct
+    reset: 0
+    states: [ 中文标点, 英文标点 ]
+  - name: simplification
+    reset: 0
+    states: [ 简体, 繁体 ]
+  - name: shape_mode
+    reset: 0
+    states: [ 正常, 切形 ]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - lua_processor@shape_processor
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - lua_translator@shape_translator
+    - table_translator@custom_phrase
+    - table_translator
+    - lua_translator@append_single
+  filters:
+    - lua_filter@shape_filter
+    - lua_filter@promote_learned
+    - lua_filter@code_hint
+    - simplifier
+    - uniquifier
+
+speller:
+  alphabet: "abcdefghijklmnopqrstuvwxyz"
+  initials: "abcdefghijklmnopqrstuvwxyz"
+  delimiter: " '"
+  max_code_length: 10
+
+translator:
+  dictionary: zrm2000
+  enable_charset_filter: true
+  enable_encoder: true
+  enable_sentence: true
+  encode_commit_history: true
+  enable_completion: false
+  enable_user_dict: true
+  user_dict: zrm2000.userdb
+  db_class: userdb
+  max_phrase_length: 10
+  initial_quality: 1.0
+  spelling_hints: 0
+  preedit_format:
+    - "xform/^(.+)$/$1 /"
+
+custom_phrase:
+  dictionary: ""
+  user_dict: custom_phrase
+  db_class: stabledb
+  enable_completion: false
+  enable_sentence: true
+  initial_quality: 99
+  preedit_format:
+    - "xform/^(.+)$/$1 /"
+
+simplifier:
+  option_name: simplification
+  opencc_config: s2t.json
+  tips: all
+
+punctuator:
+  half_shape:
+    ",": { commit: "，" }
+    ".": { commit: "。" }
+    "?": { commit: "？" }
+    "!": { commit: "！" }
+    ";": { commit: "；" }
+    "\\": { commit: "、" }
+    "/": { commit: "、" }
+    "^": { commit: "……" }
+    "_": { commit: "——" }
+    "~": { commit: "～" }
+    "$": { commit: "￥" }
+    "|": [ "·", "|", "｜" ]
+    ":": { commit: "：" }
+    "<": { commit: "《" }
+    ">": { commit: "》" }
+    "(": { commit: "（" }
+    ")": { commit: "）" }
+    '"': { pair: [ "“", "”" ] }
+  full_shape:
+    ",": { commit: "，" }
+    ".": { commit: "。" }
+    "?": { commit: "？" }
+    "!": { commit: "！" }
+    ";": { commit: "；" }
+    "\\": { commit: "、" }
+    "/": { commit: "、" }
+    "^": { commit: "……" }
+    "_": { commit: "——" }
+    "~": { commit: "～" }
+    "$": { commit: "￥" }
+    "|": [ "·", "｜", "§", "¦" ]
+    ":": { commit: "：" }
+    "<": { commit: "《" }
+    ">": { commit: "》" }
+    "(": { commit: "（" }
+    ")": { commit: "）" }
+    '"': { pair: [ "“", "”" ] }
+
+key_binder:
+  bindings:
+    - { when: has_menu, accept: semicolon, send: 2 }
+    - { when: has_menu, accept: apostrophe, send: 3 }
+    - { when: has_menu, accept: bracketleft, send: Page_Up }
+    - { when: has_menu, accept: bracketright, send: Page_Down }
+    - { when: always, accept: "Control+Shift+3", toggle: ascii_punct }
+    - { when: always, accept: "Control+Shift+numbersign", toggle: ascii_punct }
+    - { when: always, accept: "Control+period", toggle: ascii_punct }
+    - { when: always, accept: "Control+Shift+4", toggle: simplification }
+    - { when: always, accept: "Control+Shift+dollar", toggle: simplification }
+    - { when: always, accept: "Control+Shift+5", toggle: full_shape }
+    - { when: always, accept: "Control+Shift+percent", toggle: full_shape }
+    - { when: always, accept: "Alt+backslash", toggle: shape_mode }
+    - { when: always, accept: "Control+Shift+F11", toggle: shape_mode }
+    - { when: always, accept: "Control+Shift+F9", set_option: ascii_mode }
+    - { when: always, accept: "Control+Shift+F10", unset_option: ascii_mode }
+
+recognizer:
+  import_preset: default
