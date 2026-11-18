@@ -53,6 +53,7 @@ engine:
     - lua_translator@append_single
   filters:
     - lua_filter@shape_filter
+    - lua_filter@code_hint
     - lua_filter@promote_learned
     - simplifier
     - uniquifier
