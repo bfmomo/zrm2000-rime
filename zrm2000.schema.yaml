@@ -54,7 +54,6 @@ engine:
   filters:
     - lua_filter@shape_filter
     - lua_filter@promote_learned
-    - lua_filter@code_hint
     - simplifier
     - uniquifier
 
