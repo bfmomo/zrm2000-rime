@@ -11,4 +11,5 @@
 - 候选间距 `candidate_spacing` 定为 12（配合 `hilite_spacing` 6），候选词与下一个序号之间留白。
 - 单字候选后面显示**辅助形码**（输入 `zi` 显示 `aa/bz/pa…`；输入 `zirj` 显示各字自己的形码），由 `lua/zrm_code_hint.lua` 计算。
 - 输入条编码末尾补一个空格（仅显示，不进入上屏文本）。
+- 安装说明补充 install.ps1 → install-tsf.ps1 的两步流程（UAC、备份位置、跳过与回退）。
 - 依 GPL-3.0 随包提供 TSF 的**对应源码**：`tsf/src/`（补丁 + 4 个改动文件 + 编译说明），Release 另附完整源码包 `zrm2000-tsf-src-1.1.0.zip`。

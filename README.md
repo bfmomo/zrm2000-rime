@@ -28,8 +28,12 @@
 | rime.lua | Lua 扩展入口 |
 | lua/ | 切形码表、剩余编码提示、Lua 模块 |
 | default.custom.yaml | 方案列表（默认只启用自动方案） |
-| weasel.custom.yaml | 小狼毫外观 |
-| install.ps1 | 安装脚本 |
+| weasel.custom.yaml | 小狼毫外观（布局项在 `style/layout/` 下） |
+| zrm2000-help.html | 菜单「帮助文档」打开的本地帮助页 |
+| tsf/ | 自编译的 Weasel TSF（x64/x86）+ GPL 源码说明；`tsf/src/` 是对应源码 |
+| install.ps1 | 安装脚本（普通权限；会调用 install-tsf.ps1） |
+| install-tsf.ps1 | 替换输入法程序（管理员，由 install.ps1 弹出 UAC 调起） |
+| version.json | 版本与更新源 |
 
 ## 三、安装
 
@@ -38,9 +42,13 @@
 
         powershell -ExecutionPolicy Bypass -File .\install.ps1
 
-   或手工把本目录所有文件复制到 %APPDATA%\Rime。
+   脚本分两步：先以普通权限复制方案/词库/帮助到 `%APPDATA%\Rime`，再**弹出 UAC** 询问是否替换
+   输入法程序（管理员运行 `install-tsf.ps1`，替换 System32/SysWOW64/程序目录 4 个 DLL，原文件备份为
+   `*.bak-<时间戳>`）。不想换输入法程序就在 UAC 点「否」或先删掉 `tsf` 目录。
+   细节见《安装说明.md》第三节。
 3. 右键小狼毫托盘图标 -> 重新部署（首次约 30–60 秒，40 MB 码表）。
 4. 只需一个方案：**自然码2000**；F4 里不再需要切“字词/语句”。
+5. 重启已打开的程序（或注销），新的输入法组件才生效。
 
 ## 四、按键与标点
 
