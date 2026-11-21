@@ -1,0 +1,139 @@
+diff --git a/WeaselTSF/EditSession.cpp b/WeaselTSF/EditSession.cpp
+index 4e31c70..670ab72 100644
+--- a/WeaselTSF/EditSession.cpp
++++ b/WeaselTSF/EditSession.cpp
+@@ -13,6 +13,15 @@ STDMETHODIMP WeaselTSF::DoEditSession(TfEditCookie ec) {
+ 
+   bool ok = m_client.GetResponseData(std::ref(parser));
+ 
++  // zrm2000: the composition code is what the input bar shows at the left of
++  // the candidates; keep one trailing space so the code and the first
++  // candidate do not touch (the schema's per-candidate preedit_format cannot
++  // do this, Weasel never displays candidate preedit).
++  if (ok && !context->preedit.str.empty() &&
++      context->preedit.str.back() != L' ') {
++    context->preedit.str.push_back(L' ');
++  }
++
+   _UpdateLanguageBar(_status);
+ 
+   bool compositionEnded = false;
+diff --git a/WeaselTSF/LanguageBar.cpp b/WeaselTSF/LanguageBar.cpp
+index 41d8f0d..ddc17a1 100644
+--- a/WeaselTSF/LanguageBar.cpp
++++ b/WeaselTSF/LanguageBar.cpp
+@@ -45,8 +45,23 @@ static LPCWSTR GetWeaselRegName() {
+ }
+ 
+ static bool open(const std::wstring& path) {
+-  return (uintptr_t)ShellExecuteW(NULL, L"open", path.c_str(), NULL, NULL,
+-                                  SW_SHOWNORMAL) > 32;
++  if ((uintptr_t)ShellExecuteW(NULL, L"open", path.c_str(), NULL, NULL,
++                               SW_SHOWNORMAL) > 32)
++    return true;
++  // ShellExecuteW can fail silently inside a TSF host process (association
++  // lookup denied, no default browser in that context, ...). Fall back to
++  // asking the shell itself to start the file.
++  std::wstring cmdline = L"cmd.exe /c start \"\" \"" + path + L"\"";
++  STARTUPINFOW si = {};
++  si.cb = sizeof(si);
++  PROCESS_INFORMATION pi = {};
++  if (CreateProcessW(NULL, cmdline.data(), NULL, NULL, FALSE, CREATE_NO_WINDOW,
++                     NULL, NULL, &si, &pi)) {
++    CloseHandle(pi.hThread);
++    CloseHandle(pi.hProcess);
++    return true;
++  }
++  return false;
+ }
+ 
+ CLangBarItemButton::CLangBarItemButton(com_ptr<WeaselTSF> pTextService,
+@@ -292,6 +307,21 @@ std::wstring WeaselTSF::_GetRootDir() {
+   return dir;
+ }
+ 
++// Same lookup as the "user folder" menu item: the configured RimeUserDir,
++// falling back to %APPDATA%\Rime. (WeaselUserDataPath() lives in the server
++// side and is not linked into the TSF.)
++static std::wstring UserDataDir() {
++  std::wstring dir;
++  if (FAILED(RegGetStringValue(HKEY_CURRENT_USER, L"Software\\Rime\\Weasel",
++                               L"RimeUserDir", dir)) ||
++      dir.empty()) {
++    WCHAR path[MAX_PATH] = {0};
++    ExpandEnvironmentStringsW(L"%AppData%\\Rime", path, _countof(path));
++    dir = path;
++  }
++  return dir;
++}
++
+ void WeaselTSF::_HandleLangBarMenuSelect(UINT wID) {
+   std::wstring dir{};
+   switch (wID) {
+@@ -326,11 +356,37 @@ void WeaselTSF::_HandleLangBarMenuSelect(UINT wID) {
+     case ID_WEASELTRAY_LOGDIR:
+       open(WeaselLogPath().wstring());
+       break;
+-    case ID_WEASELTRAY_WIKI:
+-      open(L"https://rime.im/docs/");
++    case ID_WEASELTRAY_WIKI: {
++      // zrm2000: the help page ships with the program (install dir), with the
++      // user data dir and the old public copy kept as fallbacks.
++      std::wstring root;
++      RegGetStringValue(HKEY_LOCAL_MACHINE, GetWeaselRegName(), L"WeaselRoot",
++                        root);
++      std::wstring user_dir = UserDataDir();
++      const std::wstring candidates[] = {
++          root.empty() ? L"" : root + L"\\zrm2000-help.html",
++          user_dir.empty() ? L"" : user_dir + L"\\zrm2000-help.html",
++      };
++      bool opened = false;
++      for (auto const& p : candidates) {
++        std::error_code ec;
++        if (!p.empty() && fs::exists(p, ec) && open(p)) {
++          opened = true;
++          break;
++        }
++      }
++      if (!opened) {
++        open(L"https://github.com/bfmomo/zrm2000-rime");
++        MessageBoxW(NULL,
++                    L"\u672a\u627e\u5230\u672c\u5730\u5e2e\u52a9\u6587\u6863 "
++                    L"zrm2000-help.html\uff0c\u5df2\u6253\u5f00\u9879\u76ee\u4e3b\u9875\u3002",
++                    L"\u81ea\u7136\u78012000", MB_ICONINFORMATION | MB_OK);
++      }
+       break;
+-    case ID_WEASELTRAY_FORUM:
+-      open(L"https://rime.im/discuss/");
++    }
++    case ID_WEASELTRAY_CHECKUPDATE:
++      // zrm2000: our own release channel instead of the upstream appcast
++      open(L"https://github.com/bfmomo/zrm2000-rime/releases/latest");
+       break;
+     default:
+       m_client.TrayCommand(wID);
+diff --git a/WeaselTSF/WeaselTSF.rc b/WeaselTSF/WeaselTSF.rc
+index 648bad1..56c18bb 100644
+Binary files a/WeaselTSF/WeaselTSF.rc and b/WeaselTSF/WeaselTSF.rc differ
+diff --git a/include/WeaselIPCData.h b/include/WeaselIPCData.h
+index 7efd462..966ccd4 100644
+--- a/include/WeaselIPCData.h
++++ b/include/WeaselIPCData.h
+@@ -1,4 +1,4 @@
+-﻿#pragma once
++#pragma once
+ 
+ #include <string>
+ #include <vector>
+@@ -460,7 +460,10 @@ void serialize(Archive& ar, weasel::UIStyle& s, const unsigned int version) {
+   ar & s.layout_type;
+   ar & s.vertical_text_left_to_right;
+   ar & s.vertical_text_with_wrap;
+-  ar & s.vertical_right_to_left;
++  // NOTE(zrm2000): the Weasel installed here (0.16.x-era UIStyle, 69 fields)
++  // has no vertical_right_to_left; its serialized stream has exactly the
++  // 0.16.3 field list (verified token by token against the live server).
++  // ar & s.vertical_right_to_left;
+   ar & s.paging_on_scroll;
+   ar & s.min_width;
+   ar & s.max_width;
