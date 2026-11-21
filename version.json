@@ -1,0 +1,12 @@
+{
+  "product": "zrm2000-rime",
+  "version": "1.1.0",
+  "released": "2026-11-21",
+  "weasel_tsf": "0.17.4.1",
+  "homepage": "https://github.com/bfmomo/zrm2000-rime",
+  "releases": "https://github.com/bfmomo/zrm2000-rime/releases/latest",
+  "schema": "zrm2000.schema.yaml",
+  "help": "zrm2000-help.html",
+  "tsf": ["weaselx64.dll", "weasel.dll"],
+  "notes": "menu: help points to the shipped zrm2000-help.html; forum entry removed; check-update opens the project releases page"
+}
