@@ -31,6 +31,7 @@
 | weasel.custom.yaml | 小狼毫外观（布局项在 `style/layout/` 下） |
 | zrm2000-help.html | 菜单「帮助文档」打开的本地帮助页 |
 | tsf/ | 自编译的 Weasel TSF（x64/x86）+ GPL 源码说明；`tsf/src/` 是对应源码 |
+| install.cmd | 安装启动器（双击即可；用 -ExecutionPolicy Bypass 调 PowerShell） |
 | install.ps1 | 安装脚本（普通权限；会调用 install-tsf.ps1） |
 | install-tsf.ps1 | 替换输入法程序（管理员，由 install.ps1 弹出 UAC 调起） |
 | version.json | 版本与更新源 |
@@ -38,9 +39,12 @@
 ## 三、安装
 
 1. 安装 64 位小狼毫：https://rime.im/download/
-2. 在本目录运行：
+2. 双击 `install.cmd`（推荐），或在 PowerShell 里运行：
 
         powershell -ExecutionPolicy Bypass -File .\install.ps1
+
+   > 直接 `.install.ps1` 在 Windows 默认策略下会报"禁止运行脚本"；`install.cmd` 已带
+   > `-ExecutionPolicy Bypass`（仅本次运行），见《安装说明.md》第六节。
 
    脚本分两步：先以普通权限复制方案/词库/帮助到 `%APPDATA%\Rime`，再**弹出 UAC** 询问是否替换
    输入法程序（管理员运行 `install-tsf.ps1`，替换 System32/SysWOW64/程序目录 4 个 DLL，原文件备份为
