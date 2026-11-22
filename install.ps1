@@ -15,7 +15,14 @@ $files = @(
   'default.custom.yaml',
   'weasel.custom.yaml'
 )
-Copy-Item (Join-Path $src 'lua') $dst -Recurse -Force
+# lua modules: replace the folder instead of merging (a second run would
+# otherwise create lua\lua and rime.lua would fail to find its modules)
+$luaDst = Join-Path $dst 'lua'
+if (Test-Path $luaDst) { Remove-Item $luaDst -Recurse -Force }
+New-Item -ItemType Directory -Force -Path $luaDst | Out-Null
+$luaFiles = Get-ChildItem (Join-Path $src 'lua') -Filter *.lua -File
+foreach ($lf in $luaFiles) { Copy-Item $lf.FullName (Join-Path $luaDst $lf.Name) -Force }
+Write-Host ('lua modules copied: ' + $luaFiles.Count)
 foreach ($f in $files) {
   $to = Join-Path $dst $f
   if (Test-Path $to) { Copy-Item $to ($to + '.bak') -Force }
