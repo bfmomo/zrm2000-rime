@@ -1,0 +1,96 @@
+# 全拼（由 luna_pinyin + luna_quanpin 合并成独立方案，避免方案列表里出现朙月拼音）
+schema:
+  schema_id: luna_quanpin
+  name: 全拼
+  version: '0.2'
+  author:
+  - 佛振 <chen.sst@gmail.com>
+  description: '所謂「全拼」，其實是去除聲調的漢語拼音。
+
+    供形碼用作拼音反查。
+
+    '
+switches:
+- name: ascii_mode
+  reset: 0
+  states:
+  - 中文
+  - 西文
+- name: full_shape
+  states:
+  - 半角
+  - 全角
+- name: simplification
+  states:
+  - 漢字
+  - 汉字
+- name: ascii_punct
+  states:
+  - 。，
+  - ．，
+engine:
+  processors:
+  - ascii_composer
+  - recognizer
+  - key_binder
+  - speller
+  - punctuator
+  - selector
+  - navigator
+  - express_editor
+  segmentors:
+  - ascii_segmentor
+  - matcher
+  - abc_segmentor
+  - punct_segmentor
+  - fallback_segmentor
+  translators:
+  - punct_translator
+  - table_translator@custom_phrase
+  - reverse_lookup_translator
+  - script_translator
+  filters:
+  - simplifier
+  - uniquifier
+speller:
+  alphabet: zyxwvutsrqponmlkjihgfedcba
+  delimiter: ' '''
+  algebra:
+    __patch:
+    - pinyin:/spelling_correction
+translator:
+  dictionary: luna_pinyin
+  preedit_format:
+  - xform/([nl])v/$1ü/
+  - xform/([nl])ue/$1üe/
+  - xform/([jqxy])v/$1u/
+  prism: luna_quanpin
+punctuator:
+  import_preset: symbols
+key_binder:
+  import_preset: default
+recognizer:
+  import_preset: default
+  patterns:
+    punct: ^/([0-9]0?|[A-Za-z]+)$
+    reverse_lookup: '`[a-z]*''?$'
+custom_phrase:
+  dictionary: ''
+  user_dict: custom_phrase
+  db_class: stabledb
+  enable_completion: false
+  enable_sentence: false
+  initial_quality: 1
+reverse_lookup:
+  dictionary: stroke
+  enable_completion: true
+  prefix: '`'
+  suffix: ''''
+  tips: 〔筆畫〕
+  preedit_format:
+  - xlit/hspnz/一丨丿丶乙/
+  comment_format:
+  - xform/([nl])v/$1ü/
+__patch:
+- grammar:/hant?
+- luna_pinyin.custom:/patch?
