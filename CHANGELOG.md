@@ -16,3 +16,4 @@
 - 新增 `install.cmd` 启动器：用 `-ExecutionPolicy Bypass` 调 PowerShell 并解除下载阻止标记，双击即可安装（解决默认策略下 ".ps1 被禁"）。
 - 安装说明补充常见问题（脚本被禁、文件被阻止、UAC 取消、装完没变化）与 install.ps1 → install-tsf.ps1 的两步流程（UAC、备份位置、跳过与回退）。
 - 依 GPL-3.0 随包提供 TSF 的**对应源码**：`tsf/src/`（补丁 + 4 个改动文件 + 编译说明），Release 另附完整源码包 `zrm2000-tsf-src-1.1.0.zip`。
+- 帮助文档「网盘安装包」改为「网络空间下载地址」（https://bfmomo.ysepan.com/#/ml/1556397）。
