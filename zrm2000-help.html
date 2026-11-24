@@ -242,16 +242,35 @@ a{color:#1467c6}
 <li><b>四字以上</b>：首字母缩写。如 党和国家领导人 = <code>dhgr</code>。</li>
 <li><b>逐字造词</b>：打整码后翻页出单字，逐字选，自动记忆成词。</li>
 </ol>
+<h3>首末形码（双字词 6 码）</h3>
+<p>双字词全码 = <b>词码(4) + 首字主形 + 末字主形 = 6 码</b>。例：效果 = <code>xcgo</code>（词码）+ <code>w</code>（效的主形）+ <code>a</code>（果的主形）= <code>xcgowa</code>。</p>
+<p><b>形码可以只输一部分就调序，不必输全：</b></p>
+<ul>
+<li>打 <b>4 码</b>（<code>xcgo</code>）→ 每个候选后面显示还差的 2 个形码（效果<code>wa</code>、小国<code>ak</code>、小郭<code>ae</code>…）。</li>
+<li>再打 <b>1 个形码</b>（<code>xcgow</code>）→ 匹配的词（效果）自动排到最前，注释显示剩下那 1 个形码 <code>a</code>。</li>
+<li>打全 <b>6 码</b>（<code>xcgowa</code>）→ 精确命中。</li>
+</ul>
 </div>
 
 <div class="sec">
 <h2>四、常用操作</h2>
 <table>
 <tr><th>功能</th><th>按键</th><th>功能</th><th>按键</th></tr>
-<tr><td>切形（第二辅形选字）</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">F11</span></td><td>中英临时切换</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">F9</span>/<span class="kbd">F10</span></td></tr>
-<tr><td>中英标点</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">3</span></td><td>简繁</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">4</span></td></tr>
-<tr><td>全半角</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">5</span></td><td>翻页</td><td><span class="kbd">[</span> / <span class="kbd">]</span></td></tr>
+<tr><td>选第 1 候选（上屏）</td><td><span class="kbd">空格</span></td><td>选第 2 / 3 候选</td><td><span class="kbd">;</span> / <span class="kbd">'</span></td></tr>
+<tr><td>编码内光标左 / 右移</td><td><span class="kbd">,</span> / <span class="kbd">.</span></td><td>翻页</td><td><span class="kbd">[</span> / <span class="kbd">]</span></td></tr>
+<tr><td>设置菜单</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">F4</span></td><td>切形（第二辅形选字）</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">F11</span>（或 Alt+\）</td></tr>
+<tr><td>中英临时切换</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">F9</span>/<span class="kbd">F10</span></td><td>中英标点</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">3</span></td></tr>
+<tr><td>简繁输出</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">4</span></td><td>全半角</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">5</span></td></tr>
 </table>
+<h3>状态提示（编码行行首）</h3>
+<p>候选窗编码行最左边显示当前模式：<code>字简</code>/<code>字繁</code>（字优先+简/繁）、<code>调简</code>/<code>调繁</code>（调频优先+简/繁）、<code>切形</code>（切形状态）。</p>
+<h3>设置菜单（Ctrl+Shift+F4）</h3>
+<p>共 3 项，按数字键切换：1. 字优先 / 调频优先；2. 字符集·繁简（简 / 简繁）；3. 输出简繁（简体 / 繁体）。</p>
+<h3>单字与形码提示</h3>
+<ul>
+<li><b>只打 1 码</b>：只出 3 个高频单字（第 1 空格上屏、第 2 <code>;</code>、第 3 <code>'</code>），不显示多余编码。</li>
+<li><b>打 2~3 码</b>：单字优先（「字优先」档下）；候选后面显示该字的剩余形码。</li>
+</ul>
 </div>
 
 <div class="sec">

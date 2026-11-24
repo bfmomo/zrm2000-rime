@@ -12,6 +12,10 @@ local function filter(input, env)
   local typed = env.engine.context.input
   local shape_on = env.engine.context:get_option("shape_mode")
   local n = #typed
+  if n == 1 then
+    for cand in input:iter() do yield(cand) end
+    return
+  end
   for cand in input:iter() do
     if shape_on then
       yield(cand)

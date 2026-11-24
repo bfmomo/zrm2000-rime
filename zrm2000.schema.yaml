@@ -27,7 +27,12 @@ switches:
   - name: shape_mode
     reset: 0
     states: [ 正常, 切形 ]
-
+  - name: freq_first
+    reset: 0
+    states: [ 字优先, 调频优先 ]
+  - name: charset_trad
+    reset: 1
+    states: [ 简, 简繁 ]
 engine:
   processors:
     - ascii_composer
@@ -35,6 +40,7 @@ engine:
     - key_binder
     - speller
     - lua_processor@shape_processor
+    - lua_processor@settings_processor
     - punctuator
     - selector
     - navigator
@@ -48,13 +54,20 @@ engine:
   translators:
     - punct_translator
     - lua_translator@shape_translator
+    - lua_translator@settings_translator
     - table_translator@custom_phrase
     - table_translator
     - lua_translator@append_single
   filters:
     - lua_filter@shape_filter
     - lua_filter@code_hint
-    - lua_filter@promote_learned
+    - lua_filter@word_shape
+    - lua_filter@settings_filter
+    - lua_filter@single_priority
+    - lua_filter@one_code
+    - lua_filter@charset
+    - lua_filter@mode_display
+    - lua_filter@quick_hint
     - simplifier
     - uniquifier
 
@@ -137,6 +150,8 @@ punctuator:
 
 key_binder:
   bindings:
+    - { when: composing, accept: comma, send: Left }
+    - { when: composing, accept: period, send: Right }
     - { when: has_menu, accept: semicolon, send: 2 }
     - { when: has_menu, accept: apostrophe, send: 3 }
     - { when: has_menu, accept: bracketleft, send: Page_Up }
