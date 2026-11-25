@@ -12,6 +12,7 @@
 - **第 2 / 3 候选显示快选键 `;` / `'`**。
 - **设置菜单（Ctrl+Shift+F4）简化为 3 项**。
 - 移除候选注释里重复的模式提示（`[字简]`），模式统一到编码行行首。
+- **安装包构建注意（重要）**：`setup.ps1` 必须保存为 **UTF-8 带 BOM**（首字节 `EF BB BF`）。PowerShell 5.1 会把无 BOM 的 `.ps1` 按 ANSI/GBK 读，含中文的行会吞掉引号导致整段解析失败（表现为装到一半 `ParserError / TerminatorExpectedAtEndOfString`）。**打包前务必用 `[System.Management.Automation.Language.Parser]::ParseFile` 校验一遍。**
 
 ## 1.1.0 — 2026-11-21
 

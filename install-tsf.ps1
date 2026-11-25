@@ -9,7 +9,8 @@ $pairs = @(
   @{ src = (Join-Path $src 'tsf\weaselx64.dll'); dst = 'C:\Windows\System32\weasel.dll' },
   @{ src = (Join-Path $src 'tsf\weaselx64.dll'); dst = (Join-Path $prog 'weaselx64.dll') },
   @{ src = (Join-Path $src 'tsf\weasel.dll');    dst = 'C:\Windows\SysWOW64\weasel.dll' },
-  @{ src = (Join-Path $src 'tsf\weasel.dll');    dst = (Join-Path $prog 'weasel.dll') }
+  @{ src = (Join-Path $src 'tsf\weasel.dll');    dst = (Join-Path $prog 'weasel.dll') },
+  @{ src = (Join-Path $src 'tsf\WeaselServer.exe'); dst = (Join-Path $prog 'WeaselServer.exe') }
 )
 $stamp = Get-Date -Format 'yyyyMMdd-HHmm'
 foreach ($p in $pairs) {
