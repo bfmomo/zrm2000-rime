@@ -277,10 +277,32 @@ a{color:#1467c6}
 <h2>五、相关链接</h2>
 <p>自然码官网：<a href="https://www.ziranma.com.cn/">https://www.ziranma.com.cn/</a></p>
 <p>Rime/小狼毫官方文档：<a href="https://rime.im/docs/">https://rime.im/docs/</a></p>
-<p>本复刻版仓库：<a href="https://github.com/bfmomo/zrm2000-rime">https://github.com/bfmomo/zrm2000-rime</a></p>
+<p>本复刻版仓库：<a href="https://gitee.com/shenzewen-ts/zrm2000-rime">https://gitee.com/shenzewen-ts/zrm2000-rime</a>（GitHub 镜像：<a href="https://github.com/bfmomo/zrm2000-rime">github.com/bfmomo/zrm2000-rime</a>）</p>
 <p><b>参加讨论（论坛）</b>：<a href="https://rime.im/discuss/">https://rime.im/discuss/</a></p>
 <p><b>百度贴吧（自然码）</b>：<a href="https://tieba.baidu.com/f?kw=%E8%87%AA%E7%84%B6%E7%A0%81">https://tieba.baidu.com/f?kw=自然码</a></p>
 <p><b>网络空间下载地址</b>：<a href="https://bfmomo.ysepan.com/#/ml/1556397">https://bfmomo.ysepan.com/#/ml/1556397</a></p>
+</div>
+
+<div class="sec">
+<h2>六、联网说明</h2>
+<p>本输入法运行时<b>不做任何自动联网</b>。唯一联网动作是：你手动点语言栏「检查新版本」时，向 Gitee 取一次版本号（不含任何用户数据）；有新版才弹窗提示，确认后才用浏览器打开下载页。</p>
+<ul>
+<li>一次 HTTPS GET，约 1 秒</li>
+<li>检查地址在注册表 <code>HKCU\Software\Rime\Weasel\UpdateVersionUrl</code>，可改可清空</li>
+<li>完整核查见随包 <code>联网情况说明.md</code></li>
+</ul>
+</div>
+
+<div class="sec">
+<h2>七、用户数据备份</h2>
+<p>你的用户数据都在 <code>%APPDATA%\Rime\</code>，<b>重装 / 升级 / 换机前请先备份</b>：</p>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>文件 / 目录</th><th>内容</th></tr>
+<tr><td><code>zrm2000.userdb.userdb</code>（或 <code>*.userdb</code> 文件夹）</td><td>词频、自造词、调频记录</td></tr>
+<tr><td><code>custom_phrase.txt</code></td><td>自定义短语</td></tr>
+<tr><td><code>user.yaml</code></td><td>方案选择等</td></tr>
+</table>
+<p>备份方法：把上面几项复制到别的目录；重装后放回 <code>%APPDATA%\Rime\</code>，再在托盘菜单点一次「重新部署」即可。</p>
 </div>
 
 </div>

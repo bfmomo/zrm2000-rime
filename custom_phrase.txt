@@ -2,7 +2,7 @@
 # coding: utf-8
 #
 # 自然码2000 v2 新词置顶（高权重）
-# text\tcode\tweight
+# text	tcode	weight
 二手车	erubie	1000000
 二手车	eui	1000000
 区块链	qukylm	1000000
@@ -14,7 +14,7 @@
 新能源汽车	xnyi	1000000
 大数据	dauuju	1000000
 大数据	duj	1000000
-云计算	ypjisr	1000000
+云计算	typjisr	1000000
 云计算	yjs	1000000
 互联网	hlw	1000000
 物联网	wulmwh	1000000
@@ -65,7 +65,3 @@
 新质生产力	xvul	1000000
 输入法	srf	1000000
 自然码	zrm	1000000
-华北区域	hbqy	1000000
-华北区域	hwbzquy	1000000
-华北区域	hwbzquyu	1000000
-梁文锋	ldwffg	1000000
